@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>午夜电梯 — 惊悚小说</title>
+<style>
+@page {
+  size: A4;
+  margin: 14mm 13mm 16mm 13mm;
+  background: #f8f6ee;
+}
+@page:first { background: #f8f6ee; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --paper:      #f8f6ee;
+  --paper-warm: #faf7f0;
+  --ink:        #1a1a18;
+  --ink-mid:    #3d3d3a;
+  --ink-light:  #6b6960;
+  --rule:       #ccc8b8;
+  --rule-dark:  #8a8578;
+  --accent:     #1B365D;
+  --accent-bg:  #E4ECF5;
+  --serif: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", Georgia, serif;
+}
+
+html, body { background: var(--paper); }
+@media screen { body { max-width: 210mm; margin: 0 auto; } }
+
+body {
+  font-family: var(--serif);
+  font-size: 10pt;
+  line-height: 1.62;
+  color: var(--ink);
+}
+
+/* ===== 双栏布局 ===== */
+.content-wrap {
+  column-count: 2;
+  column-gap: 5mm;
+  column-rule: 0.4pt solid var(--rule);
+  orphans: 3;
+  widows: 3;
+}
+
+/* ===== 装饰 ===== */
+.rule-diamond {
+  display: flex;
+  align-items: center;
+  gap: 8pt;
+  margin: 8pt 0;
+  color: var(--rule-dark);
+  font-size: 8pt;
+  letter-spacing: 3pt;
+}
+.rule-diamond::before,
+.rule-diamond::after {
+  content: "";
+  flex: 1;
+  height: 0.5pt;
+  background: var(--rule);
+}
+
+.ornament {
+  text-align: center;
+  color: var(--rule-dark);
+  font-size: 11pt;
+  letter-spacing: 5pt;
+  margin: 6pt 0;
+}
+
+/* ===== 封面 ===== */
+.cover {
+  min-height: 140mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8mm;
+  break-after: page;
+  position: relative;
+}
+.cover::before, .cover::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 0.8pt;
+  background: var(--ink);
+}
+.cover::before { top: 0; }
+.cover::after  { bottom: 0; }
+.cover-eyebrow {
+  font-size: 7.5pt;
+  letter-spacing: 3pt;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8pt;
+}
+.cover-title {
+  font-size: 30pt;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 3pt;
+  margin-bottom: 8pt;
+}
+.cover-sub {
+  font-size: 10.5pt;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  margin-bottom: 12pt;
+  max-width: 75%;
+}
+.cover-meta {
+  font-size: 8.5pt;
+  color: var(--ink-light);
+  line-height: 1.8;
+  border-top: 0.5pt solid var(--rule);
+  padding-top: 7pt;
+  display: flex;
+  gap: 16pt;
+}
+
+/* ===== 卷首语 ===== */
+.foreword {
+  border-left: 1pt solid var(--ink);
+  padding-left: 8mm;
+  margin: 0 0 10pt 0;
+  page-break-after: always;
+}
+.foreword-label {
+  font-size: 7.5pt;
+  letter-spacing: 2pt;
+  color: var(--ink-light);
+  margin-bottom: 4pt;
+}
+.foreword-text {
+  font-size: 10pt;
+  line-height: 1.6;
+  color: var(--ink-mid);
+}
+
+/* ===== 章节 ===== */
+.chapter {
+  break-before: page;
+  page-break-before: always;
+}
+.chapter-header {
+  text-align: center;
+  margin-bottom: 8pt;
+  position: relative;
+}
+.chapter-header::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.5pt;
+  background: var(--rule);
+}
+.chapter-num {
+  display: inline-block;
+  background: var(--paper);
+  padding: 0 8pt;
+  font-size: 7.5pt;
+  letter-spacing: 2pt;
+  color: var(--accent);
+  text-transform: uppercase;
+  position: relative;
+}
+.chapter-title {
+  font-size: 15pt;
+  font-weight: 500;
+  line-height: 1.25;
+  margin-bottom: 2pt;
+  break-after: avoid;
+}
+.chapter-subtitle {
+  font-size: 8.5pt;
+  color: var(--ink-light);
+}
+
+/* ===== 段落 ===== */
+p {
+  margin: 0 0 5pt 0;
+  line-height: 1.62;
+  text-align: justify;
+  text-indent: 2em;
+}
+p.no-indent { text-indent: 0; }
+p.lead-p {
+  font-size: 10.5pt;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  text-indent: 0;
+  margin-bottom: 7pt;
+}
+
+/* ===== 首字下沉 ===== */
+.drop-cap::first-letter {
+  float: left;
+  font-size: 42pt;
+  font-weight: 500;
+  line-height: 0.8;
+  padding-right: 3pt;
+  padding-top: 2pt;
+  color: var(--accent);
+}
+
+/* ===== 边注引语 ===== */
+.sidebar-quote {
+  float: right;
+  clear: right;
+  width: 42%;
+  margin: 3pt 0 5pt 10pt;
+  padding: 5pt 8pt;
+  border-top: 1pt solid var(--accent);
+  border-bottom: 1pt solid var(--accent);
+  background: var(--accent-bg);
+  font-size: 8.5pt;
+  line-height: 1.55;
+  color: var(--ink-mid);
+  break-inside: avoid;
+}
+
+/* ===== 引文区块 ===== */
+.block-quote {
+  margin: 5pt 3pt;
+  padding: 5pt 10pt;
+  border-left: 2pt solid var(--accent);
+  background: var(--paper-warm);
+  font-size: 9.5pt;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  break-inside: avoid;
+}
+.block-quote cite {
+  display: block;
+  margin-top: 4pt;
+  font-size: 8pt;
+  color: var(--ink-light);
+  text-indent: 0;
+}
+
+/* ===== 图片 ===== */
+figure {
+  margin: 8pt -3pt;
+  break-inside: avoid;
+  background: var(--paper-warm);
+  padding: 5pt;
+  border: 0.5pt solid var(--rule);
+  page-break-inside: avoid;
+}
+figure img { width: 100%; display: block; }
+figcaption {
+  font-size: 7.5pt;
+  color: var(--ink-light);
+  margin-top: 4pt;
+  text-align: center;
+  border-top: 0.3pt solid var(--rule);
+  padding-top: 3pt;
+}
+.figure-center {
+  text-align: center;
+  margin: 10pt 0;
+  break-inside: avoid;
+}
+.figure-center img { max-width: 80%; border: 0.5pt solid var(--rule); }
+
+/* ===== 档案卡片 ===== */
+.doc-card {
+  background: var(--paper-warm);
+  border: 0.5pt solid var(--rule);
+  border-left: 2pt solid var(--ink-mid);
+  padding: 6pt 10pt;
+  margin: 7pt 0;
+  break-inside: avoid;
+  font-size: 8.5pt;
+}
+.doc-card-title {
+  font-size: 7pt;
+  letter-spacing: 1pt;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-bottom: 4pt;
+}
+.doc-card p { text-indent: 0; margin-bottom: 3pt; line-height: 1.55; }
+.doc-card p:last-child { margin-bottom: 0; }
+
+/* ===== 重点语句 ===== */
+.emphasis {
+  background: linear-gradient(to bottom, transparent 60%, #d0e0f0 60%);
+  padding: 0 2pt;
+}
+
+/* ===== 结尾语 ===== */
+.ending {
+  text-align: center;
+  padding: 10pt 0;
+  margin-top: 10pt;
+  break-inside: avoid;
+}
+.ending p {
+  text-indent: 0;
+  text-align: center;
+  font-size: 9.5pt;
+  color: var(--ink-mid);
+  margin-bottom: 5pt;
+  line-height: 1.65;
+}
+
+/* ===== 页眉 ===== */
+@page {
+  @top-center {
+    content: "午夜电梯";
+    font-family: var(--serif);
+    font-size: 7pt;
+    color: var(--ink-light);
+    letter-spacing: 1pt;
+  }
+}
+@page:first { @top-center { content: ""; } }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ 封面 ═══════════════ -->
+<section class="cover">
+  <div class="cover-eyebrow">惊悚小说 · 深夜连载</div>
+  <div class="cover-title">午夜电梯</div>
+  <div class="cover-sub">
+    那栋楼没有十三层。<br>
+    但电梯按钮上有。
+  </div>
+  <div class="cover-meta">
+    <div><strong>体裁</strong><br>悬疑惊悚</div>
+    <div><strong>篇幅</strong><br>约五千字</div>
+    <div><strong>结构</strong><br>七章</div>
+  </div>
+</section>
+
+<!-- ═══════════════ 卷首语 ═══════════════ -->
+<section class="foreword">
+  <div class="foreword-label">卷首语</div>
+  <div class="foreword-text">
+    有些楼，不只是住人的。<br>
+    有些电梯，不只是载人的。<br>
+    当深夜的寂静变成了实体的压迫，当电梯按钮自己亮起来——<br>
+    你要做的第一件事，是<span style="color:var(--accent)">不要回应</span>。
+  </div>
+</section>
+
+<!-- ═══════════════ 正文（双栏）═══════════════ -->
+<div class="content-wrap">
+
+<!-- ══ 第一章 ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第一章</div>
+  </div>
+  <h1 class="chapter-title">深夜值班</h1>
+
+  <p class="lead-p">林晓辰已经在那栋楼工作了三年。</p>
+
+  <p>三年里，她学会了忍受那些细碎的、折磨人的声响：深夜两点准时响起的脚步声，从楼道东头走到西头，然后消失；凌晨三点四十七分某扇窗户自动打开的吱呀声；还有电梯在没有任何人按动的情况下，自己一层一层往上爬的沉闷嗡鸣。</p>
+
+  <p>她是这栋旧公寓楼的物业管理员。楼建于1990年代，十五层，外墙爬满了枯死的藤蔓，像一道道干涸的血管。没有电梯维护记录，没有原始图纸，没有物业档案——她接手时，前任只留下一把钥匙和一句话：<span class="emphasis">"别上十三层。"</span></p>
+
+  <p>她问为什么。</p>
+
+  <p>前任没有回答。那是两年零七个月前的事了。</p>
+
+  <p>今夜和往常一样。晓辰坐在一楼值班室里，面前是一台老旧的CRT显示器，屏幕右上角的时间闪烁着<span style="font-family:monospace; color: var(--accent);">00:00</span>。外面起了雾，不大，却足以让路灯的光晕变成一团团模糊的白。她刚泡了一杯茶，茶水还是滚烫的。</p>
+
+  <p>她正准备去倒掉——反正也睡不着——电梯的嗡鸣声突然停了。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>整栋楼陷入一种她从未经历过的寂静。不是普通的安静，不是夜深人静时那种可以承受的静默。而是一种<span class="emphasis">压迫性的、实质性的</span>寂静，像有人把整栋楼用保鲜膜封了起来。</p>
+
+  <p>然后，电梯发出了声音。</p>
+
+  <p>不是上行，不是下行。是一声……敲击。从电梯井深处传来，轻轻的，一下，一下，像有人用指节叩着金属门板。</p>
+
+  <p>晓辰没有动。她的心跳声在耳膜里擂得很响。</p>
+
+  <div class="block-quote">
+    咚。咚。咚。<br>
+    缓慢，规律，像某种仪式。
+  </div>
+</section>
+
+<!-- ══ 第二章 ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第二章</div>
+  </div>
+  <h1 class="chapter-title">十三层按钮</h1>
+
+  <p>晓辰没有去开门。她告诉自己：那只是电梯的正常故障，老楼的电梯总会发出奇怪的声音。这很正常。一切都很正常。</p>
+
+  <p>她拿起茶杯，喝了一口。茶水还是烫的，舌尖传来刺痛。</p>
+
+  <p>就在这时，她听到了另一个声音。</p>
+
+  <p>很轻，像从电梯厢里传出来的。不是敲击声，是……呼吸声。很浅，很急促，像是有人被困在里面，正在拼命地想要引起注意。</p>
+
+  <p>晓辰站起身。她知道这不合逻辑——电梯刚才明明停在一楼，门是开着的。但她还是站了起来，朝着电梯的方向走了两步。</p>
+
+  <p>然后她停住了。</p>
+
+  <div class="sidebar-quote">
+    电梯面板上，原本应该有按钮的地方——那里亮着一个数字：13。
+  </div>
+
+  <p>她清楚地记得，这栋楼只有十五层。十二层上面是十四层，没有十三层。这是所有中国人的常识：带"4"的楼层可以跳过，带"13"的楼层也可以跳过。很多旧楼都这样建造。但她从来没有见过省略的楼层会以按钮的形式……自己亮起来。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>晓辰没有按那个按钮。</p>
+
+  <p>她退回了值班室，把门反锁上。茶已经凉了。她盯着那扇金属门，心跳每分钟超过一百二十下。</p>
+
+  <p>一分钟后，电梯面板上的"13"熄灭了。</p>
+
+  <p>两分钟后，电梯开始运行。不是上行，是<span class="emphasis">下行</span>。一层，两层，三层……一直往下，往下，像是电梯井挖穿了地基，挖穿了地壳，挖进了某个没有尽头的深渊。</p>
+
+  <p>晓辰数着楼层。她数到了负三层。然后，电梯的嗡鸣声彻底消失了。连同那栋楼的一切声响——脚步声，窗户声，水管的滴答声——全部消失。</p>
+
+  <p>只剩下她自己的呼吸。</p>
+</section>
+
+<!-- ══ 第三章（插图一） ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第三章</div>
+  </div>
+  <h1 class="chapter-title">地下一层</h1>
+
+  <p>不知过了多久，晓辰的意识才重新连贯起来。</p>
+
+  <p>她发现自己正站在电梯门前。右手食指搭在电梯的"召唤"按钮上，那是一块凸起的金属片，有些冰凉。她不记得自己什么时候走出了值班室，也不记得什么时候来到了这里。</p>
+
+  <p>手机没有信号。屏幕上显示的时间是<span style="font-family:monospace; color: var(--accent);">00:00</span>——和十分钟前一模一样。</p>
+
+  <p>电梯门开了。</p>
+
+  <p class="no-indent" style="text-indent:0; margin-bottom:8pt;">不是她召唤的。是电梯自己开的。里面亮着灯——那种惨白的、日光灯管濒死时才会发出的光。一张椅子摆在电梯正中央，面朝门，背对着她。椅子上坐着一个人。</p>
+
+  <p>背影。穿着一件灰色的旧西装，肩膀窄而塌，头微微低着。</p>
+
+  <p>晓辰听见自己的声音从喉咙里挤出来："……有人吗？"</p>
+
+  <p class="no-indent" style="text-indent:0; margin-bottom:8pt;">椅子的人动了。慢慢地，像拆卸一个生锈的机械装置一样，慢慢地把头转过来。</p>
+
+  <p>转了一半的时候，晓辰看到了那是一张什么样的脸。</p>
+
+  <p>那张脸是……<span class="emphasis">空的</span>。不是没有五官，不是黑暗，是"空的"——像一张白纸，一张刚刚被擦干净、还没有来得及画上任何东西的纸。只有五官的轮廓，像用铅笔轻轻描出的虚线。</p>
+
+  <figure>
+    <img src="attachments/horror_illustration_chatgpt.png" alt="废弃走廊插图">
+    <figcaption>插图一 · 废弃走廊（ChatGPT 生成）</figcaption>
+  </figure>
+
+  <p>晓辰尖叫了。但是她的声带好像被什么东西攥住，尖叫声没有发出任何声音——只有气流穿过喉咙的嘶嘶声，像漏气的轮胎。</p>
+
+  <p>那张空脸上，突然出现了两只眼睛。</p>
+
+  <p>不是长出来的，是<span class="emphasis">睁开</span>的。像有人从纸的背面猛地戳破了那层白色的表面，两只布满血丝的眼睛从里面翻了出来。它们是人类的眼睛，眼白泛黄，瞳孔漆黑，正盯着她。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>然后，那双眼睛闭上了。脸也消失了。椅子空了。电梯里的灯熄了。</p>
+
+  <p>只剩下电梯门，缓缓地合上。</p>
+</section>
+
+<!-- ══ 第四章（插图二） ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第四章</div>
+  </div>
+  <h1 class="chapter-title">维护记录</h1>
+
+  <p>晓辰不记得自己是怎么回到值班室的。只记得她推开门的力道非常大，肩膀撞在门框上，痛感让她稍微清醒了一些。</p>
+
+  <p>她打开电脑。旧档案系统里有一份从未被完整打开过的文件，文件名是"<span style="font-family:monospace; color: var(--ink-light);">电梯维护记录_1998-2005.doc</span>"。她从来没有成功打开过，每次双击都会报错："文件已损坏或格式不支持。"</p>
+
+  <p>今晚不一样。今晚她双击，文件打开了。</p>
+
+  <div class="doc-card">
+    <div class="doc-card-title">电梯维护记录 · 摘录 A</div>
+    <p><strong>日期：</strong>1999年3月13日</p>
+    <p><strong>事件：</strong>电梯在13:13发生异常停梯事故。电梯停于B1层而非标准楼层标记区域。救援人员到场后发现轿厢门处于开启状态，内有乘客一名，男性，约三十岁，发现时已无生命体征。</p>
+    <p><strong>现场记录：</strong>轿厢内壁发现大量抓痕，深约2-3mm，从内部向外施力形成。该乘客双手指甲全部断裂脱落，手指皮肤严重磨损。死因初步判定为窒息，但颈部无勒痕，呼吸道无阻塞物。</p>
+    <p><strong>备注：</strong>此后新建楼层的楼层编号体系调整，原B1层调整为设备层，不再对普通住户开放。</p>
+  </div>
+
+  <p>晓辰的手开始发抖。她继续往下翻。</p>
+
+  <div class="doc-card">
+    <div class="doc-card-title">电梯维护记录 · 摘录 B</div>
+    <p><strong>日期：</strong>2001年7月17日</p>
+    <p><strong>事件：</strong>电梯再次于凌晨时段发生异常运行，停于B1层。住户报告在凌晨时分听见电梯从1层运行至B1层，停留约3分钟后上行归位。监控录像显示轿厢内部存在持续运动的人形阴影。</p>
+    <p><strong>处理意见：</strong>建议对B1层电梯门进行焊封处理。已于2001年7月18日完成焊封。</p>
+  </div>
+
+  <figure>
+    <img src="attachments/horror_illustration_gemini.png" alt="黑暗中睁开的眼睛插图">
+    <figcaption>插图二 · 深渊之眼（Gemini 生成）</figcaption>
+  </figure>
+
+  <p>晓辰盯着屏幕。一个念头像冰块一样滑进她的脊椎：</p>
+
+  <p>B1层电梯门被焊封了。那她刚才看到的打开的电梯门……</p>
+
+  <p>还有，1999年死于电梯的那个男人，穿的也是灰色西装。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>她想起了什么。钥匙。前任留下的钥匙。她之前从来没有用过，因为电梯机房用的是电子锁。但是前台的抽屉里，有一把铜色的老钥匙，上面刻着"<span style="font-family:monospace; color: var(--ink-light);">B1_电梯机房_紧急</span>"。</p>
+
+  <p>那把钥匙，现在就在她桌上。</p>
+
+  <p>她不记得把它拿出来的。</p>
+</section>
+
+<!-- ══ 第五章 ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第五章</div>
+  </div>
+  <h1 class="chapter-title">地下机房</h1>
+
+  <p>晓辰拿着手电筒，站在通往地下一层的楼梯口。</p>
+
+  <p>楼梯很旧，混凝土台阶上有裂缝，裂缝里长着苔藓。手电筒的光只能照亮三步的距离，再往前就是黑暗。真正的黑暗，不是光线不足的黑暗，是那种会吸收光线的、质地厚重的黑暗。</p>
+
+  <p>她一步步往下走。十步，二十步。她开始觉得不对——从一楼到地下一层，不应该走这么远。她回头想看自己走了多少级台阶，手电筒照向楼梯上方——</p>
+
+  <p>什么都没有。楼梯上方只有黑暗。不是"没有楼梯了"的黑暗，是"有东西把楼梯上方堵住了"的黑暗。</p>
+
+  <div class="sidebar-quote">
+    她只能往前走。
+  </div>
+
+  <p>又走了不知道多久，她终于到了。眼前是一扇锈迹斑斑的铁门，门上贴着一张发黄的告示：「设备层 闲人免进」。门把手上系着一根红绳，红绳上挂着一个生锈的小铃铛。奇怪的是，铃铛没有任何划痕——这扇门显然很久没有被打开过了。</p>
+
+  <p>但铃铛是新的。</p>
+
+  <p>晓辰伸出手，把手放在门把手上。铁门冰凉。红绳在轻微晃动。她不知道是不是自己的错觉，但她觉得铃铛在朝她的方向……倾斜。</p>
+
+  <p>她用那把铜钥匙打开了门。</p>
+</section>
+
+<!-- ══ 第六章 ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第六章</div>
+  </div>
+  <h1 class="chapter-title">电梯井底</h1>
+
+  <p>机房很小，只有一台控制柜和一堆杂物。空气里弥漫着铁锈和某种……甜腐的气味。晓辰没有去辨认那是什么味道。她走向控制柜，发现它上面贴着一张手写的纸条，字迹歪歪扭扭，像是用左手写的：</p>
+
+  <div class="block-quote">
+    "它在等人。它等了很久了。<br>
+    不要按下B1。它不是按钮。<br>
+    它是邀请。"
+    <cite>——周海涛，1999年3月13日</cite>
+  </div>
+
+  <p>周海涛。那个死于电梯的男人的名字。</p>
+
+  <p>他在死前留下了这张纸条。他知道会发生什么。他是……自愿的？</p>
+
+  <p>晓辰的手无意识地伸向控制柜上的一个按钮。那是一个红色的紧急制动按钮，周围有一圈金属框。按钮旁边刻着一行小字：</p>
+
+  <div class="doc-card" style="border-left-color: var(--accent); text-align:center;">
+    <p style="font-size:12pt; font-weight:500; color: var(--accent); text-indent:0;">B1 — 底层召唤</p>
+    <p style="font-size:8pt; color: var(--ink-light); text-indent:0; margin-top:2pt;">EMERGENCY USE ONLY</p>
+  </div>
+
+  <p>就在她盯着那个按钮的时候，电梯井深处传来了一阵声音。</p>
+
+  <p>不是敲击。不是呼吸。</p>
+
+  <p>是键盘敲击声。很快，很急促，像有人在打字。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>然后，她听见了电梯的嗡鸣声。是从井底传上来的。电梯正在从……某个很深的地方，往上爬。</p>
+</section>
+
+<!-- ══ 第七章 ══ -->
+<section class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">第七章</div>
+  </div>
+  <h1 class="chapter-title">午夜电梯</h1>
+
+  <p>电梯在B1层停了。</p>
+
+  <p>机房有一扇小窗，正对着电梯井。晓辰把脸贴上去，手电筒的光照进井道——她看见了那部电梯。轿厢门开着，和她之前看到的一样。但这次，里面没有椅子，没有空脸人。</p>
+
+  <p>里面有一台打字机。</p>
+
+  <p>老式的机械打字机，正在自动地、飞快地敲击着键盘。没有人操作它。纸页从机器里吐出来，上面密密麻麻地打满了字。晓辰看不清写的什么，但她能感觉到——</p>
+
+  <p>那台打字机在记录什么。记录每一个曾经按过B1按钮的人。它记录了周海涛。它在等待下一个。</p>
+
+  <div class="ornament">· ◆ ·</div>
+
+  <p>凌晨四点二十三分，巡逻的保安在地下一层楼梯口发现了林晓辰。她坐在台阶上，背靠着一扇锈迹斑斑的铁门，手里紧紧攥着一把铜钥匙。她的眼睛是睁着的，但没有焦点。</p>
+
+  <p>电梯控制柜上的B1按钮，不见了。</p>
+
+  <p>只留下一个空洞的凹槽，里面有一行刻字：</p>
+
+  <div class="block-quote" style="text-align:center; font-size:11pt; color: var(--ink);">
+    "第14位乘客已上车。"
+    <cite>1999年至今，已有13人。晓辰是第14个。</cite>
+  </div>
+
+  <p>第二天，物业发布公告：电梯维修，B1层设备层无限期封闭。所有住户不得进入地下一层。公告贴在每层楼的电梯口，但没有人注意到——</p>
+
+  <p>公告的落款日期是<span class="emphasis">1999年3月14日</span>。那是二十七年前。</p>
+
+  <div class="ornament">· · · ◆ · · ·</div>
+</section>
+
+<!-- ══ 尾声 ══ -->
+<section class="chapter ending">
+  <div class="chapter-header">
+    <div class="chapter-num">尾声</div>
+  </div>
+
+  <div class="block-quote" style="font-size:11pt; text-align:center; background: var(--ink); color: var(--paper-warm); border-left-color: var(--paper-warm);">
+    如果您住在这栋楼里，请不要在深夜乘坐电梯。<br>
+    如果电梯门自己开了，请不要进去。<br>
+    如果您必须进去——<br><br>
+    <span style="font-size:14pt; color: var(--accent);">请不要按 B1。</span>
+  </div>
+
+  <div style="margin-top: 24pt; text-align: center;">
+    <div class="ornament">◇</div>
+    <p style="text-indent:0; text-align:center; color: var(--ink-light); font-size: 8.5pt; font-style: italic;">
+      全书完 · 约五千字 · 2026
+    </p>
+  </div>
+</section>
+
+</div><!-- /content-wrap -->
+
+</body>
+</html>
