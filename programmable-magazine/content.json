@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "title": "IN GOTION / DIGITAL EDITION",
+    "issue": "PROGRAMMABLE MAGAZINE · 6P DEMO",
+    "language": "ZH-CN",
+    "accent": "#F26A21"
+  },
+  "cover": {
+    "eyebrow": "GLOBAL / LOCAL / HUMAN",
+    "title": "一份\n会生长的杂志",
+    "subtitle": "不是把 PDF 搬到网页上，而是让内容、数据、人物与时间在同一个系统里持续更新。",
+    "tags": ["Editorial", "Interactive", "Data-driven"]
+  },
+  "lead": {
+    "section": "01 / LEAD STORY",
+    "title": "新闻不只回答\n“发生了什么”",
+    "body": "真正有价值的企业内容，还要回答：为什么重要、影响了谁、下一步会发生什么。可编程杂志把新闻、人物、活动、数据拆成独立内容单元，再按不同阅读目的重新组织。",
+    "note": "示范内容：以下人物、地点与数据仅用于展示结构和交互，不代表真实业务数据。",
+    "stats": [
+      {"value": "12", "label": "内容模块"},
+      {"value": "05", "label": "阅读视角"},
+      {"value": "01", "label": "统一数据源"}
+    ]
+  },
+  "timeline": {
+    "section": "02 / QUARTER IN MOTION",
+    "title": "同一季度，\n不止一条时间线",
+    "intro": "传统内刊按栏目排版；可编程杂志则可以同时按时间、地区、人物或主题重新组织。下面是一组示范事件。",
+    "items": [
+      {"date": "JUL 08", "type": "MILESTONE", "title": "一条新通道被打开", "desc": "一项跨区域进展，不只记录节点，也补充它与业务、客户和后续动作的关系。"},
+      {"date": "JUL 21", "type": "PEOPLE", "title": "一线经验进入编辑视野", "desc": "来自制造、工程和服务现场的经验，被整理为可复用的人物内容模块。"},
+      {"date": "AUG 12", "type": "COMMUNITY", "title": "社区故事不再是活动照片集", "desc": "公益与社区活动被补充参与者、影响对象和持续性信息。"},
+      {"date": "SEP 03", "type": "CULTURE", "title": "文化内容开始跨区域共创", "desc": "不同站点提交素材，总部只做编辑与结构化，不再承担全部内容生产。"},
+      {"date": "SEP 18", "type": "DATA", "title": "同一份数据生成不同页面", "desc": "时间线、地图、人物卡片和专题页来自同一份结构化内容。"}
+    ]
+  },
+  "people": {
+    "section": "03 / PEOPLE",
+    "title": "人物不是配图，\n而是内容的入口",
+    "intro": "人物内容可以承载经验、价值观和组织变化。以下为三种示范叙事角度。",
+    "profiles": [
+      {"code": "01", "role": "制造现场", "place": "示范人物 A", "quote": "真正值得记录的，往往不是结果本身，而是团队如何把一个问题解决掉。", "tag": "PROCESS"},
+      {"code": "02", "role": "社区关系", "place": "示范人物 B", "quote": "一场活动结束之后，是否还有关系留下来，这比当天有多少人参加更重要。", "tag": "COMMUNITY"},
+      {"code": "03", "role": "全球协作", "place": "示范人物 C", "quote": "总部提供框架，本地提供语境。内容只有在两者之间往返，才真正像全球品牌。", "tag": "CULTURE"}
+    ]
+  },
+  "map": {
+    "section": "04 / GLOBAL SIGNALS",
+    "title": "地图不是装饰，\n而是另一种目录",
+    "body": "同一组故事可以按区域重新进入阅读路径。点击节点，可看到该区域示范内容的数量与主题分布。",
+    "locations": [
+      {"x": 23, "y": 39, "label": "AMERICAS", "count": 4, "theme": "People · Community"},
+      {"x": 50, "y": 31, "label": "EUROPE", "count": 5, "theme": "Milestone · Culture"},
+      {"x": 48, "y": 52, "label": "AFRICA", "count": 3, "theme": "Community · Growth"},
+      {"x": 72, "y": 50, "label": "APAC", "count": 6, "theme": "People · Operations"}
+    ]
+  },
+  "closing": {
+    "section": "05 / PUBLISHING SYSTEM",
+    "title": "改内容，\n不必重新排版",
+    "body": "编辑只维护结构化内容。页面模板负责视觉系统，GitHub 负责版本记录，Pages 负责公开发布。一次更新，可以同时改变时间线、人物页、地图与专题页。",
+    "flow": [
+      {"name": "content.json", "desc": "内容源"},
+      {"name": "template", "desc": "版式与交互"},
+      {"name": "GitHub", "desc": "版本与协作"},
+      {"name": "Pages", "desc": "公开发布"}
+    ],
+    "footer": "6P DEMO · EDIT CONTENT ONCE, PUBLISH EVERYWHERE"
+  }
+}
